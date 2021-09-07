@@ -5,17 +5,13 @@ from A8T1_plus_Helpers import html2str
 
 
 # Data Structure to store Celeb data
-
 celeb_data = {3:None , 4:None , 5:None , 6:[]}
-
-
 
 #................................................................................ Defining Lexing Rules .............................................................................#
 
 
 tokens = ('HI_RATED_OPEN', 'LO_RATED_OPEN', 'BDAY_OPEN', 'FILM_TABLE_OPEN', 'FILM_TITLE_OPEN', 
 		  'FILM_YEAR_OPEN', 'COL_CLOSE', 'TABLE_CLOSE', 'P_CLOSE', 'CONTENT')
-
 
 def t_HI_RATED_OPEN(t):
 	r'<p[\s]*[\s]class[\s]*=[\s]*"[^"]*"[\s]*[\s]data-qa[\s]*=[\s]*"celebrity-bio-highest-rated"[\s]*>[\s]*Highest[\s]*[\s]Rated[\s]*:'
@@ -25,21 +21,17 @@ def t_LO_RATED_OPEN(t):
 	r'<p[\s]*[\s]class[\s]*=[\s]*"[^"]*"[\s]*[\s]data-qa[\s]*=[\s]*"celebrity-bio-lowest-rated"[\s]*>[\s]*Lowest[\s]*[\s]Rated[\s]*:'
 	return t
 
-
 def t_BDAY_OPEN(t):
 	r'<p[\s]*[\s]class[\s]*=[\s]*"celebrity-bio__item"[\s]*[\s]data-qa[\s]*=[\s]*"celebrity-bio-bday"[\s]*>[\s]*Birthday[\s]*:'
 	return t
-
 
 def t_FILM_TABLE_OPEN(t):
 	r'<div[\s]*>[\s]*<h3[\s]*[\s]class[\s]*=[\s]*"[^"]*"[\s]*[\s]data-qa[\s]*=[\s]*"[a-z]*-filmography-movies-[a-z]*"[\s]*>[\s]*Movies[\s]*</h3[\s]*>[\s]*<div[\s][^>]*>[\s]*<table[\s]*>'
 	return t
 
-
 def t_FILM_TITLE_OPEN(t):
 	r'<td[\s]*[\s]class[\s]*=[\s]*"celebrity-filmography__title"[\s]*>'
 	return t
-
 
 def t_FILM_YEAR_OPEN(t):
 	r'<td[\s]*[\s]class[\s]*=[\s]*"celebrity-filmography__year"[\s]*>'
@@ -50,17 +42,13 @@ def t_COL_CLOSE(t):
 	r'</td[\s]*>'
 	return t
 
-
 def t_TABLE_CLOSE(t):
 	r'</table[\s]*>'
 	return t
 
-
 def t_P_CLOSE(t):
 	r'</p[\s]*>'
 	return t
-
-
 
 #.................... Other Content .....................#
 
@@ -76,7 +64,6 @@ def t_TAG(t):
 	pass
 
 
-
 # A string containing ignored characters (spaces and tabs)
 t_ignore  = ' >\t'
 
@@ -85,9 +72,6 @@ t_ignore  = ' >\t'
 def t_error(t):
 	print("Discarding invalid character '%s'" % t.value[0])
 	t.lexer.skip(1)
-
-
-
 
 
 #................................................................... Defining Grammar Production rules......................................................................#
@@ -115,7 +99,6 @@ def p_hi_rated(p):
 		celeb_data[3] = p[3].strip() + '\n' + 'Rating : ' + p[2].strip()
 
 
-
 def p_lo_rated(p):
 	'''lo_rated : LO_RATED_OPEN CONTENT CONTENT P_CLOSE
 				| LO_RATED_OPEN CONTENT P_CLOSE
@@ -129,7 +112,6 @@ def p_lo_rated(p):
 		celeb_data[4] = p[3].strip() + '\n' + 'Rating : ' + p[2].strip()
 
 
-
 def p_bday(p):
 	'''bday : BDAY_OPEN CONTENT P_CLOSE
 			| 
@@ -138,15 +120,12 @@ def p_bday(p):
 		celeb_data[5] = p[2].strip()
 
 
-
 #................................... List-based ...................................#
-
 
 def p_filmography(p):
 	'''filmography : FILM_TABLE_OPEN txt_table film_rows
 				   | 
 	'''
-
 
 def p_film_rows(p):
 	'''film_rows : FILM_TITLE_OPEN CONTENT COL_CLOSE txt_table FILM_YEAR_OPEN CONTENT COL_CLOSE txt_table film_rows
@@ -167,14 +146,10 @@ def p_film_rows(p):
 		celeb_data[6].append((f_year, f_title))
 
 
-
-
-
 #................................... Miscellaneous & Error-handling ...................................#
 
 # If TV table doesn't appear, all potential nuisance tokens are handled by txt production
 # If txt cannot at some point, txtlast handles all tokens henceforth
-
 
 # Keeping separate txt_table production ensures that txt_table doesn't eat up the TABLE_CLOSE token, like txt would have. Hence, the table_rows production is forced to terminate
 # at the first appearance of TABLE_CLOSE terminal....
@@ -188,8 +163,6 @@ def p_film_rows(p):
 # If filmography is not missing, but no rows are present, even then TABLE_CLOSE token must come (since <table> open occurred) ... So, won't cause a problem.
 
 
-
-
 # Handles random content before Filmography non-terminal appears
 def p_txt(p):
 	'''txt : CONTENT txt
@@ -199,7 +172,6 @@ def p_txt(p):
 		   | 
 	'''
 
-
 # Handles random content within Film table
 def p_txt_table(p):
 	'''txt_table : CONTENT txt
@@ -207,8 +179,6 @@ def p_txt_table(p):
 			   	 | P_CLOSE txt
 			   	 | 
 	'''
-
-
 
 # Handles random content after Film table
 def p_txtlast(p):
@@ -222,19 +192,12 @@ def p_txtlast(p):
 	'''
 
 
-
-
-
-
-
-
 # Syntax Error handling rule (Ignore unexpected tokens)
 def p_error(p):
 	pass
 
 
 #............................................................................................ Driver portion ........................................................................#
-
 
 # Function to define Lexer, Parser
 # and Parse celebrity webpage.
@@ -249,7 +212,6 @@ def parse_celpage():
 	hparser.parse(celpage_str)
 
 	return celeb_data
-
 
 
 # Demonstration (debug) code to be run to check celeb-parsing
