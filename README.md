@@ -10,7 +10,7 @@ Features and Description :
 
 Coming Soon -- GUI support, More browsing options (Start from any choice of movie).
 
-P.S. - This app was designed as part of 2 assignments for my Masters in CS at IIT-Kgp. The filenames reflect the same.
+P.S. - This app was designed as part of 2 Computing Lab assignments for my Masters in CS at IIT-Kgp. The filenames reflect the same.
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
