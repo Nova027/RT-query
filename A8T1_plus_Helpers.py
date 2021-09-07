@@ -20,8 +20,6 @@ def prompter():
     pass
 
 
-
-
 """ 
 Function to check whether (string) s 
 matches the pattern of (regex) r
@@ -32,8 +30,6 @@ def re_match(r,s):
     if len(parts) != 2 or len(parts[0])!=0 or len(parts[1])!=0:
         return False
     return True
-
-
 
 
 """ 
@@ -51,8 +47,6 @@ def html2str(fname):
     return hstr
 
 
-
-
 """
 Function to take valid input within specified numeric range
 """
@@ -64,7 +58,6 @@ def validr_input(lower, upper, display_msg, display_msg_2='', repeat_msg=None):
 
     display_msg += ' ' + opt_range + ' ' + display_msg_2 + ': '
 
-
     try:
         reqnum = int(input(display_msg)) - 1
         if reqnum not in range(lower,upper+1):
@@ -73,7 +66,6 @@ def validr_input(lower, upper, display_msg, display_msg_2='', repeat_msg=None):
     except Exception:
         reqnum = upper+1
         print('Invalid! Re-enter.')
-
     
     while reqnum not in range(lower,upper+1):
         try:
@@ -87,11 +79,7 @@ def validr_input(lower, upper, display_msg, display_msg_2='', repeat_msg=None):
     return reqnum
 
 
-
-
-
 #............................................................................ Primary A8T1 Functions ..........................................................................#
-
 
 
 """
@@ -136,13 +124,6 @@ def in_genre():
 
 
 
-
-
-
-
-
-
-
 """
 ---------------------------------------------------------------------------------------------------------------------------------------
     Function for Error-checking & Extracting Movie-list with URLs (as list of tuples of Dictionary Key:Value) from HTML (as string)
@@ -163,8 +144,6 @@ def listmov_table(mlist_str):
     for i, table in enumerate(table_occs):
         table_occs[i] = (re.split(regex_tend, table))[0]
 
-
-
     """................... Error checking within Extracted Table(s); Identifying target table & extracting info ..........................."""
 
     # Some simple regex operation like re.findall("<a[^<]*</a>", table_occs[0]) could ideally find every Movie Name & URL in 3-4 lines... 
@@ -174,7 +153,6 @@ def listmov_table(mlist_str):
     
     tablefound = False
 
-
     for i, table in enumerate(table_occs):
         try:
             t_head,t_cont = re.split(r'</thead[\s]*>', table)
@@ -182,10 +160,8 @@ def listmov_table(mlist_str):
         except ValueError:
             # Didnt have exactly one </thead> tag... Unexpected
             continue
-        
-        
+                
         ##............... 1. Check Column headings to verify if correct table was found
-        
         regex_chstart = r'<th[\s]*>|<th[\s][^<]*>'
         regex_chend = r'</th[\s]*>'
         headcols = re.split(regex_chstart, t_head)
@@ -201,7 +177,6 @@ def listmov_table(mlist_str):
         # Col-2 header definition:-- <span class="some_string">Rating</span><span class="some_string">Tomatometer</span> ;
         # OR; <span class="some_string">Tomatometer</span><span class="some_string">Rating</span>
         # with any no. of whitespaces allowed in between, wherever possible
-        
         col2_re_half1 = r'<span[\s]*[\s]class[\s]*=[\s]*"[^"]*"[\s]*>[\s]*Rating[\s]*</span[\s]*>[\s]*'
         col2_re_half2 = r'<span[\s]*[\s]class[\s]*=[\s]*"[^"]*"[\s]*>[\s]*Tomatometer[\s]*</span[\s]*>[\s]*'
         col2_re = (r'[\s]*' + col2_re_half1 + col2_re_half2) + "|" + (r'[\s]*' + col2_re_half2 + col2_re_half1)
@@ -218,10 +193,7 @@ def listmov_table(mlist_str):
         if not colsfound:
             continue
         
-        
-
         ##............. 2. Checking the content rows of the table, for further verification
-        
         regex_rstart = r'<tr[\s]*>'
         regex_rend = r'</tr[\s]*>'
         
@@ -275,21 +247,12 @@ def listmov_table(mlist_str):
             movie_dict.append((movie_name, 'https://www.rottentomatoes.com'+movie_url))
         
         
-
         ##......... 3. Stop further search for target table, if all conditions matched
-        
         if tablefound:
             return movie_dict
 
-
     if not tablefound:
         return None
-
-
-
-
-
-
 
 
 
@@ -324,25 +287,14 @@ def down_movie(reqgenre, movie_dict):
     return reqmovie
 
 
-
-
-
-
-
-
 """
-----------------------------
+--------------------------------------------------------
  Function to Log the Query 
-----------------------------
+--------------------------------------------------------
 """
 def logger(reqgenre, reqmovie):
     with open('log.txt', 'a') as f:
         print(reqgenre, ' -- ', reqmovie, end='  --  ', file=f)
-
-
-
-
-
 
 
 
