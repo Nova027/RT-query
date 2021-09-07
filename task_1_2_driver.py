@@ -12,7 +12,6 @@ import ply.yacc as yacc
 from A9T2_celparse import parse_celpage
 
 
-
 #.......................................................................... Initial Setup ...................................................................#
 
 # List to store query-fields & Corresponding Results (extracted)
@@ -32,8 +31,6 @@ movie_data = [
 			 ]
 
 
-
-
 # Check if the Assgn8 HTML Output exists
 if not path.isfile('Movie_webpage.html'):
 	# If not.... Perform Assgn8 Task-1 & Download 'Movie_webpage.html' (as not already done)
@@ -50,17 +47,7 @@ if not path.isfile('Movie_webpage.html'):
 	A8T1.down_movie(reqgenre, movie_dict)
 
 
-
-
-
-
-
 #.......................................................................... Extra Query-Functions ...................................................................#
-
-
-
-
-
 
 def reset_data():
 	global movie_data
@@ -83,9 +70,6 @@ def reset_data():
 
 
 
-
-
-
 #........... Update Movie table with info about given celeb
 def celinfo_update(celeb_id):
 	# Download & Save HTML file from corresp. URL
@@ -101,10 +85,6 @@ def celinfo_update(celeb_id):
 	# Save the data extracted
 	for info_id in celdata:
 		movie_data[5][1][celeb_id][info_id][1] = celdata[info_id]
-
-
-
-
 
 
 #.......... Display requested Info of requested Celebrity
@@ -145,15 +125,6 @@ def celq_process(celeb_id, info_id):
 
 
 
-
-
-
-
-
-
-
-
-
 #................................................................................ Defining Lexing Rules .............................................................................#
 
 tokens = ('TITLE_OPEN', 'DIRECTOR_LABEL','WRITER_LABEL','PRODUCER_LABEL','LANGUAGE_LABEL','BOXOFF_LABEL','RUNTIME_LABEL', 'PLOT_OPEN', 'RECSPAN_OPEN', 'WTWLIST_OPEN', 'WTW',
@@ -190,8 +161,6 @@ def t_RUNTIME_LABEL(t):
 	return t
 
 
-
-
 #................... Relevant Open-tags. ....................#
 
 def t_WTWLIST_OPEN(t):
@@ -221,8 +190,6 @@ def t_TSPAN_OPEN(t):
 def t_CSPAN_OPEN(t):
 	r'<span[\s]*[\s]class[\s]*=[\s]*"characters[\s]subtle[\s]smaller"[\s]*[\s]title[\s]*=[\s]*"[^"]*"[\s]*>'
 	return t
-
-
 
 
 #................... Link-tags & a-tags .......................#
@@ -263,8 +230,6 @@ def t_WTW(t):
 	return t
 
 
-
-
 #................... Close-tags & Misc. ....................#
 
 def t_TITLE_CLOSE(t):
@@ -288,7 +253,6 @@ def t_BREAK(t):
 	return t
 
 
-
 #.................... Other Content .....................#
 
 # All Other Non-tag Content
@@ -301,7 +265,6 @@ def t_CONTENT(t):
 def t_TAG(t):
 	r'<[^>]+>'
 	pass
-
 
 
 # A string containing ignored characters (spaces and tabs)
@@ -317,10 +280,6 @@ def t_error(t):
 
 #................... Define Lexer
 lex.lex()
-
-
-
-
 
 
 
@@ -348,14 +307,13 @@ def p_m_title(p):
 		reslist = res.split('-')
 		movie_data[0][1] = '-'.join(reslist[:-1])
 
-
+		
 def p_mi_plot(p):
 	'''mi_plot : PLOT_OPEN CONTENT DIV_CLOSE
 			   | 
 	'''
 	if len(p) > 1:
 		movie_data[6][1] = p[2].strip()
-
 
 def p_mi_language(p):
 	'''mi_language : LANGUAGE_LABEL MINFO_VALUE_OPEN CONTENT DIV_CLOSE
@@ -398,7 +356,6 @@ def p_val_list(p):
 		p[0] = p[2].strip() + '\n' + p[5]
 
 
-
 def p_mi_director(p):
 	'''mi_director : DIRECTOR_LABEL MINFO_VALUE_OPEN val_list DIV_CLOSE
 				   | 
@@ -406,7 +363,7 @@ def p_mi_director(p):
 	if len(p) > 1 and len(p[3]) != 0:
 		movie_data[1][1] = p[3].split('\n')
 
-
+		
 def p_mi_writer(p):
 	'''mi_writer : WRITER_LABEL MINFO_VALUE_OPEN val_list DIV_CLOSE
 				 | 
@@ -421,7 +378,6 @@ def p_mi_producer(p):
 	'''
 	if len(p) > 1 and len(p[3]) != 0:
 		movie_data[3][1] = p[3].split('\n')
-
 
 
 
@@ -441,15 +397,12 @@ def p_m_wtw_table(p):
 	'''
 
 
-
-
 #....................... Cast-Crew Members
 
 def p_mi_castcrew_ls(p):
 	'''mi_castcrew_ls : mi_castcrew_ls txt cc_member
 					  | 
 	'''
-
 
 def p_cc_member(p):
 	'''cc_member : CCILINK TSPAN_OPEN CONTENT SPAN_CLOSE A_CLOSE CSPAN_OPEN BREAK CONTENT BREAK CONTENT SPAN_CLOSE
@@ -511,15 +464,12 @@ def p_cc_member(p):
 
 
 
-
-
 #......................... Movie-Recomm.s list
 
 def p_m_rec_list(p):
 	'''m_rec_list : m_rec_list movie_rec
 				  | 
 	'''
-
 
 def p_movie_rec(p):
 	'''movie_rec : RECLINK RECSPAN_OPEN CONTENT SPAN_CLOSE A_CLOSE
@@ -530,7 +480,6 @@ def p_movie_rec(p):
 	
 	else:
 		(movie_data[9][1]).append( (p[3].strip(), p[1].strip()) )
-
 
 
 
@@ -556,28 +505,15 @@ def p_error(p):
 	pass
 
 
-
-
-
-
 #............ Defining parser
 
 hparser = yacc.yacc(debug=0)
 
 
-
-
-
-
-
 #...................................................... Read Data & Parse (Tokenization is implicit) ....................................................#
 
 movie_str = html2str('Movie_webpage.html')
-
 hparser.parse(movie_str)
-
-
-
 
 
 #...................................................................... Query Processing .................................................................#
@@ -606,7 +542,6 @@ while True:
 	print()
 	print(query, ':')
 
-
 	#........................... Perform suitable action acc to query ............................#
 
 
@@ -616,14 +551,10 @@ while True:
 		for r in res:
 			print(r)
 
-
-
-
 	#.................... Recursive case (Recommendation browsing)
 	elif qnum == 9:
 		reclist = movie_data[qnum][1]
 		rcount = len(reclist)
-
 
 		print('Browse Movie Recommendations (List):-')
 		for i, rec in enumerate(reclist):
@@ -631,7 +562,6 @@ while True:
 		print(str(rcount+1) +". <<Go back to Main Menu>>")
 
 		rec_qnum = validr_input(0, rcount, 'Select from options', 'to explore Movie [WARNING! Irreversible action] ')
-
 
 		if rec_qnum == rcount:
 			back_option = True
@@ -659,11 +589,6 @@ while True:
 
 			print('New Movie ready to Browse! (Old removed)')
 			
-
-
-
-
-
 	#................... Hierarchical case (Individual cast info browsing)
 	elif qnum == 5:
 		cclist = movie_data[qnum][1]
@@ -677,7 +602,6 @@ while True:
 			print(str(ccount+1) +". <<Go back to Main Menu>>")
 
 			subqnum = validr_input(0, ccount, 'Select an option')
-
 
 			if subqnum == ccount:
 				back_option = True
@@ -714,22 +638,14 @@ while True:
 			# End-of-while (Repeats Cast-Crew Browsing List) 
 			# (Select last option to go back to Main menu)
 
-
-
-
 	#....................... Single-value cases (All other)
 	else:
 		print(movie_data[qnum][1])
-
 
 	# End of an iteration of Movie-info querying
 	print()
 	if not back_option:
 		prompter()
-
-
-
-
 
 
 #........................................................... Clean-up ......................................................#
@@ -738,8 +654,6 @@ if path.isfile('Movie_WP_processed.html'):
 	remove('Movie_WP_processed.html')
 
 rename('Movie_webpage.html', 'Movie_WP_processed.html')
-
-
 
 if path.isfile('Celeb_WP_processed.html'):
 	remove('Celeb_WP_processed.html')
