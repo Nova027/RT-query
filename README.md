@@ -1,4 +1,18 @@
-# RottenTomatoes Query-Answering App
+# RottenTomatoes Browsing and Query-Answering App
+
+Features and Description :
+- Python app for Query-dependent browsing and relevant information extraction from RT webpages.
+- Implements a HTML parser using PLY from scratch, with custom Lex (lexing) & Yacc (parsing) rules.
+- Current version only supports starting from a particular RT movie webpage, which can be selected from top-100 movies from 10 available genres.
+- Various queries supported, to fetch information about a particular movie and/or a celebrity (cast/crew).
+- Also supports browsing from one movie webpage to another via "RT Recommendations".
+- Also allows opening a celebrity webpage for any cast/crew member for a particular movie, and then returning to the main menu for said movie.
+
+Coming Soon -- GUI support, More browsing options (Start from any choice of movie).
+
+P.S. - This app was designed as part of 2 assignments for my Masters in CS at IIT-Kgp. The filenames reflect the same.
+
+----------------------------------------------------------------------------------------------------------------------------------------
 
 To execute the programs in correct order, simply open a Linux terminal in this location and type the following command :
 > make
@@ -11,10 +25,10 @@ In a non-linux environment, following command can be used instead :
 Makefile internally runs command "python3 task_1_2_driver.py", which makes use of the other 3 provided programs.
 
 For the program to execute, the working directory must contain:
-- task_1_2_driver.py : Main Driver program.
-- A8T1_plus_Helpers.py : Helper functions.
-- char_read.py : For useful input-methods used throughout.
-- A9T2_celparse.py : Lexer and Parser designed for Celebrity webpages of RT.
+> - task_1_2_driver.py : Main Driver program.
+> - A8T1_plus_Helpers.py : Helper functions.
+> - char_read.py : For useful input-methods used throughout.
+> - A9T2_celparse.py : Lexer and Parser designed for Celebrity webpages of RT.
 
 -------------------------------------------------------------------------------------------------------------------------------------------
 
